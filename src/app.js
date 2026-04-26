@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const env = require("./config/env");
+const pool = require("./config/db");
 const openApiDocument = require("./docs/openapi");
 const schoolRoutes = require("./routes/school.routes");
 const { errorHandler, notFoundHandler } = require("./middleware/error-handler");
@@ -41,6 +42,19 @@ app.get("/health", (_req, res) => {
     status: "ok",
     uptime_seconds: Math.round(process.uptime())
   });
+});
+
+app.get("/db-health", async (_req, res, next) => {
+  try {
+    await pool.query("SELECT 1");
+
+    res.json({
+      success: true,
+      database: "connected"
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
