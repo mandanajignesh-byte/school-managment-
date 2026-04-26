@@ -127,6 +127,7 @@ Recommended easy deployment path:
 2. Create a MySQL database on Railway, Render, PlanetScale, or any MySQL hosting provider.
 3. Deploy the Node app on Render or Railway.
 4. Add the environment variables from `.env.example` to the hosting dashboard.
+   - If your hosted MySQL provider requires SSL, set `DB_SSL=true`.
 5. Run `npm run db:init` once against the hosted database.
 
 For the assignment form:
