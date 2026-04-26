@@ -57,6 +57,24 @@ app.get("/db-health", async (_req, res, next) => {
   }
 });
 
+app.get("/debug-db-config", (_req, res) => {
+  const password = env.db.password || "";
+
+  res.json({
+    success: true,
+    db: {
+      host: env.db.host,
+      port: env.db.port,
+      user: env.db.user,
+      database: env.db.database,
+      ssl: env.db.ssl,
+      password_length: password.length,
+      password_preview:
+        password.length > 1 ? `${password[0]}...${password[password.length - 1]}` : "missing"
+    }
+  });
+});
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
 app.use(schoolRoutes);
 app.use(notFoundHandler);

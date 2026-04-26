@@ -10,7 +10,16 @@ const errorHandler = (error, _req, res, _next) => {
   const statusCode = error.statusCode || 500;
 
   if (statusCode === 500) {
-    console.error(error);
+    console.error("Unhandled error", {
+      message: error.message,
+      code: error.code,
+      errno: error.errno,
+      sqlState: error.sqlState,
+      sqlMessage: error.sqlMessage,
+      fatal: error.fatal,
+      hostname: error.hostname,
+      stack: error.stack
+    });
   }
 
   res.status(statusCode).json({
